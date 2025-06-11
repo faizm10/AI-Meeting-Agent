@@ -1,6 +1,6 @@
 "use client"
-import { SummaryCard } from "@/components/summary-card"
-import { FileUpload } from "@/components/file-upload"
+import { SummaryCard } from "@/components/SummaryCard"
+import { FileUpload } from "@/components/FileUpload"
 import { useState } from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
