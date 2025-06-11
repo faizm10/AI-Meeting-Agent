@@ -1,13 +1,11 @@
-import { generateText } from "ai";
-import { openai } from "@/app/lib/openai";
 import { NextResponse } from "next/server";
 import { SYSTEM_PROMPT } from "@/lib/constants";
+import Groq from "groq-sdk";
 export async function POST(request: Request) {
   try {
-    // Parse the request body
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY! });
     const body = await request.json();
     const { transcript } = body;
-
     if (!transcript || transcript.trim() === "") {
       return NextResponse.json(
         { error: "Meeting transcript is required" },
@@ -16,8 +14,9 @@ export async function POST(request: Request) {
     }
 
     // Generate the summary and action items using OpenAI
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
+    const chatCompletion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+
       messages: [
         {
           role: "system",
@@ -32,15 +31,14 @@ export async function POST(request: Request) {
       max_tokens: 1500,
     });
 
-    const text = completion.choices[0]?.message?.content || "";
-    // Return the generated summary and action items
+    const text = chatCompletion.choices[0]?.message?.content || "";
     return NextResponse.json({ summary: text });
-  } catch (error) {
-    console.log("Loaded API Key:", process.env.OPENAI_API_KEY);
-    console.error("Error in summarize API:", error);
-    return NextResponse.json(
-      { error: "Failed to summarize meeting" },
-      { status: 500 }
-    );
-  }
+  } catch (error: any) {
+  console.error("Groq summarize route error:", error);
+  return NextResponse.json(
+    { error: error.message || "Failed to summarize meeting" },
+    { status: 500 }
+  );
+}
+
 }

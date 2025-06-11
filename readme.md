@@ -28,8 +28,8 @@ I wanted to work on a real-world problem using AI agents and language models lik
 ## 🛠 Tech Stack
 
 - **Frontend:** Next.js (TypeScript), Tailwind CSS
-- **Backend:** OpenAI API via Next.js API Routes
-- **Storage:** Supabase (PostgreSQL) [coming soon]
+- **Backend:** Groq API via Next.js API Routes
+- **Storage:** Supabase (PostgreSQL) 
 - **Extras (coming soon):** Slack integration, audio transcription
 
 ## 📁 Features

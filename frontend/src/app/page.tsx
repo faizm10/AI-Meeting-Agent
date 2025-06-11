@@ -1,39 +1,41 @@
-"use client"
+"use client";
 
-import { FileUpload } from "@/components/File-Upload"
-import { SummaryCard } from "@/components/Summary-Card"
-import { useState } from "react"
+import { FileUpload } from "@/components/File-Upload";
+import { SummaryCard } from "@/components/Summary-Card";
+import { useState } from "react";
 
 export default function Home() {
-  const [summary, setSummary] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [summary, setSummary] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (content: string) => {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
       const res = await fetch("/api/summarize", {
         method: "POST",
         body: JSON.stringify({ transcript: content }),
         headers: { "Content-Type": "application/json" },
-      })
+      });
 
       if (!res.ok) {
-        const errorData = await res.json()
-        throw new Error(errorData.error || "Failed to summarize meeting")
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to summarize meeting");
       }
 
-      const data = await res.json()
-      setSummary(data.summary)
+      const data = await res.json();
+      setSummary(data.summary);
     } catch (err) {
-      console.error("Error:", err)
-      setError(err instanceof Error ? err.message : "An unknown error occurred")
+      console.error("Error:", err);
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-yellow-300 p-8">
@@ -48,19 +50,19 @@ export default function Home() {
           </p>
         </div>
 
-        {/* File Upload Section */}
+        
         <FileUpload onSubmit={handleSubmit} isLoading={isLoading} />
 
-        {/* Error Message */}
+        
         {error && (
           <div className="bg-red-400 border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-lg font-black text-black">{error}</p>
           </div>
         )}
 
-        {/* Summary Section */}
+        
         {summary && <SummaryCard summary={summary} />}
       </div>
     </div>
-  )
+  );
 }
