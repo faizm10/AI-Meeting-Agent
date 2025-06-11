@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate the summary and action items using OpenAI
+    // Generate the summary and action items using Groq
     const chatCompletion = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
 
