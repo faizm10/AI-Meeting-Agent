@@ -4,6 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { Upload, FileText, Loader2 } from "lucide-react";
+import { pdfToText } from "pdf-ts";
 
 interface FileUploadProps {
   onSubmit: (content: string) => void;
@@ -15,29 +16,85 @@ export function FileUpload({ onSubmit, isLoading }: FileUploadProps) {
   const [fileName, setFileName] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
 
-  const handleUpload = (file: File) => {
+  const handleUpload = async (file: File) => {
     if (!file) return;
 
     setFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const content = e.target?.result as string;
+
+    try {
+      let content = "";
+
+      if (file.type === "application/pdf") {
+        // Handle PDF files
+        const arrayBuffer = await file.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+        content = await pdfToText(uint8Array);
+      } else {
+        // Handle text files (.txt, .docx, etc.)
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const textContent = e.target?.result as string;
+          setText(textContent);
+          onSubmit(textContent);
+        };
+        reader.readAsText(file);
+        return; // Exit early for text files since they use callback
+      }
+
+      // For PDF files, set content and submit
       setText(content);
       onSubmit(content);
-    };
-    reader.readAsText(file);
+    } catch (error) {
+      console.error("Error processing file:", error);
+      alert(
+        "Error processing file. Please try again or use a different file format."
+      );
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) handleUpload(file);
+    if (file) {
+      // Check file type
+      const allowedTypes = [
+        "text/plain",
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+
+      if (!allowedTypes.includes(file.type) && !file.name.endsWith(".txt")) {
+        alert(
+          "Please upload a .txt or .pdf file only. More types will be coming soon"
+        );
+        return;
+      }
+
+      handleUpload(file);
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
     const file = e.dataTransfer.files[0];
-    if (file) handleUpload(file);
+
+    if (file) {
+      // Check file type
+      const allowedTypes = [
+        "text/plain",
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+
+      if (!allowedTypes.includes(file.type) && !file.name.endsWith(".txt")) {
+        alert(
+          "Please upload a .txt or .pdf file only. More types will be coming soon"
+        );
+        return;
+      }
+
+      handleUpload(file);
+    }
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -53,7 +110,7 @@ export function FileUpload({ onSubmit, isLoading }: FileUploadProps) {
   return (
     <div className="space-y-6">
       {/* Upload Area */}
-      {/* <div
+      <div
         className={`relative border-4 border-black bg-cyan-400 p-8 transform transition-all duration-200 ${
           isDragOver
             ? "shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] scale-105"
@@ -65,7 +122,7 @@ export function FileUpload({ onSubmit, isLoading }: FileUploadProps) {
       >
         <input
           type="file"
-          accept=".txt,.docx"
+          accept=".txt,.docx,.pdf"
           onChange={handleFileChange}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
           disabled={isLoading}
@@ -79,8 +136,13 @@ export function FileUpload({ onSubmit, isLoading }: FileUploadProps) {
           )}
 
           <div className="space-y-2">
-            <h3 className="text-2xl font-black text-black">{isLoading ? "PROCESSING..." : "DROP YOUR FILE HERE"}</h3>
-            <p className="text-lg font-bold text-black">or click to browse • .txt, .docx files only</p>
+            <h3 className="text-2xl font-black text-black">
+              {isLoading ? "PROCESSING..." : "DROP YOUR FILE HERE"}
+            </h3>
+            <p className="text-lg font-bold text-black">
+              or click to browse • .txt or .pdf file only. More types will be
+              coming soon
+            </p>
           </div>
 
           {fileName && (
@@ -90,12 +152,12 @@ export function FileUpload({ onSubmit, isLoading }: FileUploadProps) {
             </div>
           )}
         </div>
-      </div> */}
+      </div>
 
       {/* Manual Text Input */}
       <div className="bg-green-400 border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <h3 className="text-xl font-black text-black mb-4 transform -rotate-1 bg-white inline-block px-3 py-1 border-2 border-black">
-          PASTE TEXT DIRECTLY
+          OR PASTE TEXT DIRECTLY
         </h3>
         <textarea
           value={text}
