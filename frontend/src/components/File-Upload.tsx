@@ -1,59 +1,59 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Upload, FileText, Loader2 } from "lucide-react"
+import { useState } from "react";
+import { Upload, FileText, Loader2 } from "lucide-react";
 
 interface FileUploadProps {
-  onSubmit: (content: string) => void
-  isLoading: boolean
+  onSubmit: (content: string) => void;
+  isLoading: boolean;
 }
 
 export function FileUpload({ onSubmit, isLoading }: FileUploadProps) {
-  const [text, setText] = useState("")
-  const [fileName, setFileName] = useState("")
-  const [isDragOver, setIsDragOver] = useState(false)
+  const [text, setText] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const handleUpload = (file: File) => {
-    if (!file) return
+    if (!file) return;
 
-    setFileName(file.name)
-    const reader = new FileReader()
+    setFileName(file.name);
+    const reader = new FileReader();
     reader.onload = (e) => {
-      const content = e.target?.result as string
-      setText(content)
-      onSubmit(content)
-    }
-    reader.readAsText(file)
-  }
+      const content = e.target?.result as string;
+      setText(content);
+      onSubmit(content);
+    };
+    reader.readAsText(file);
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) handleUpload(file)
-  }
+    const file = e.target.files?.[0];
+    if (file) handleUpload(file);
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(false)
-    const file = e.dataTransfer.files[0]
-    if (file) handleUpload(file)
-  }
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleUpload(file);
+  };
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(true)
-  }
+    e.preventDefault();
+    setIsDragOver(true);
+  };
 
   const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(false)
-  }
+    e.preventDefault();
+    setIsDragOver(false);
+  };
 
   return (
     <div className="space-y-6">
       {/* Upload Area */}
-      <div
+      {/* <div
         className={`relative border-4 border-black bg-cyan-400 p-8 transform transition-all duration-200 ${
           isDragOver
             ? "shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] scale-105"
@@ -90,12 +90,12 @@ export function FileUpload({ onSubmit, isLoading }: FileUploadProps) {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
 
       {/* Manual Text Input */}
       <div className="bg-green-400 border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <h3 className="text-xl font-black text-black mb-4 transform -rotate-1 bg-white inline-block px-3 py-1 border-2 border-black">
-          OR PASTE TEXT DIRECTLY
+          PASTE TEXT DIRECTLY
         </h3>
         <textarea
           value={text}
@@ -115,5 +115,5 @@ export function FileUpload({ onSubmit, isLoading }: FileUploadProps) {
         )}
       </div>
     </div>
-  )
+  );
 }

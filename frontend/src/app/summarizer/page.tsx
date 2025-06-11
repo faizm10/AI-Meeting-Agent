@@ -65,7 +65,7 @@ export default function SummarizerPage() {
           </p>
         </div>
 
-        {/* File Upload Section */}
+        
         <FileUpload onSubmit={handleSubmit} isLoading={isLoading} />
 
         {/* Error Message */}
