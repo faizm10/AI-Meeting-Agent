@@ -33,12 +33,12 @@ export async function POST(request: Request) {
 
     const text = chatCompletion.choices[0]?.message?.content || "";
     return NextResponse.json({ summary: text });
-  } catch (error: any) {
-  console.error("Groq summarize route error:", error);
-  return NextResponse.json(
-    { error: error.message || "Failed to summarize meeting" },
-    { status: 500 }
-  );
-}
-
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error("Groq summarize route error:", err);
+    return NextResponse.json(
+      { error: err.message || "Failed to summarize meeting" },
+      { status: 500 }
+    );
+  }
 }
