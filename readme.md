@@ -20,9 +20,9 @@ Soon, I’ll also add features to:
 
 ## 💡 Why I Built It
 
-I wanted to work on a real-world problem using AI agents and language models like GPT-4. This project gave me a chance to explore:
+I wanted to work on a real-world problem using AI agents and language models like GROQ. This project gave me a chance to explore:
 - How to structure prompts for summarizing and extracting tasks
-- How to connect a frontend (Next.js) with AI (OpenAI API)
+- How to connect a frontend (Next.js) with AI (Groq API)
 - How to organize a full-stack project that solves a practical problem
 
 ## 🛠 Tech Stack
