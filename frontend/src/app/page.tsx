@@ -5,7 +5,7 @@ import {
   Clock,
   Users,
 } from "lucide-react";
-import { NAME } from "@/lib/constants";
+import { NAME, PATHS } from "@/lib/constants";
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-yellow-300">
@@ -16,7 +16,7 @@ export default function LandingPage() {
             {NAME}
           </div>
           <Link
-            href="/summarizer"
+            href={PATHS.summarizer}
             className="bg-green-400 border-3 border-black px-6 py-3 font-black text-black hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transform hover:scale-105 transition-all duration-200"
           >
             TRY IT FREE
@@ -43,7 +43,7 @@ export default function LandingPage() {
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link
-              href="/summarizer"
+              href={PATHS.summarizer}
               className="bg-orange-400 border-4 border-black px-8 py-4 text-xl font-black text-black hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform hover:scale-105 transition-all duration-200 flex items-center gap-3"
             >
               START SUMMARIZING
@@ -225,7 +225,7 @@ export default function LandingPage() {
             </div>
 
             <Link
-              href="/summarizer"
+              href={PATHS.summarizer}
               className="bg-orange-400 border-4 border-black px-8 py-4 text-xl font-black text-black hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform hover:scale-105 transition-all duration-200 inline-flex items-center gap-3"
             >
               START FOR FREE
@@ -245,7 +245,7 @@ export default function LandingPage() {
             Join thousands of teams who've already revolutionized their meeting workflow
           </p> */}
           <Link
-            href="/summarizer"
+            href={PATHS.summarizer}
             className="bg-green-400 border-4 border-black px-12 py-6 text-2xl font-black text-black hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transform hover:scale-105 transition-all duration-200 inline-flex items-center gap-4"
           >
             GET STARTED NOW

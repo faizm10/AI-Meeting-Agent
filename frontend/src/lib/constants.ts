@@ -1,5 +1,7 @@
 export const NAME = 'MEETSUM'
-
+export const PATHS ={
+    summarizer: '/summarizer'
+}
 export // System prompt to guide the AI in summarizing meetings and extracting action items
 const SYSTEM_PROMPT = `
 You are an expert meeting summarizer. Your task is to analyze meeting transcripts and provide:

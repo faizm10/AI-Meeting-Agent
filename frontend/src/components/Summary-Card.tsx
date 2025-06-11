@@ -88,6 +88,7 @@ export function SummaryCard({ summary }: SummaryCardProps) {
 
       {/* Summary Content */}
       <div className="space-y-6">
+        
         {/* Meeting Summary Section */}
         <div className="bg-white border-3 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <h3 className="text-xl font-black text-black mb-4 transform -rotate-1 bg-cyan-300 inline-block px-3 py-1 border-2 border-black">
@@ -103,6 +104,7 @@ export function SummaryCard({ summary }: SummaryCardProps) {
               ACTION ITEMS
             </h3>
             <div className="text-lg font-bold text-black leading-relaxed whitespace-pre-wrap">
+              [Task description] - [Deadline] - [Person responsible]
               {actionItems.split("\n").map((item, index) => {
                 if (item.trim() === "") return null
 
